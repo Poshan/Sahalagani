@@ -14,7 +14,7 @@
     var center = new OpenLayers.LonLat(centerX, centerY);
     var zoom = 8;
     var map = new OpenLayers.Map('map',{
-      projection:proj4326
+      projection:proj900913
     });
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     	//mapquest tiles
@@ -29,17 +29,32 @@
 
         map.addLayer(baseOSM);
 
-
+        // #yaha eeuta matra setBaseLayer garya chha ta
         map.setBaseLayer(baseOSM);
-        map.setCenter(center.transform(proj4326,proj3815),zoom);
+        //could this be error?? transformof center??
+      //  map.setCenter(center.transform(proj4326,proj3815),zoom);
+      // map.setCenter(center,zoom);
+        map.setCenter(center.transform(proj4326,proj900913),zoom);
         var projects = new OpenLayers.Layer.WMS("Sahalagani-projects", "http://localhost:8080/geoserver/wms",
           {
-            // srs:'EPSG:3815',
+            srs:'EPSG:4326',
             layers: "sahalagani:projects",
-            format:'image/png'
-          }
+            format:'image/png',
+            transparent:true
+          },
+          {isBaseLayer:false}
         );
         map.addLayer(projects);
+
+        //adding the mouse coordinate position
+        var mousepositioncontrol = new OpenLayers.Control.MousePosition({
+          displayProjection: 'EPSG:4326',
+          prefix: 'EPSG:4326   ',
+          seperator: '|',
+          numDigits: 4,
+          emptyString: 'Move mouse over to the map area'
+        });
+        map.addControl(mousepositioncontrol);
 
 
         // map.setCenter(center,zoom);
