@@ -84,10 +84,13 @@
             sphericalMercator: true,
             // tileSize: new OpenLayers.Size({ 512, 512 }),
             wrapDateLine: true,
-            numZoomLevels: 20
-        },
-        {isBaseLayer:false}
+            numZoomLevels: 20,
+            isBaseLayer:false
+        }
       );
+      OpenLayers.Util.onImageLoadError = function(){
+           this.src = "images/blank.png";
+      };
 
         map.addLayers([districtTiles,projects]);
         // map.addLayer(projects);
