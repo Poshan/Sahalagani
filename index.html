@@ -1,11 +1,46 @@
 <html>
 <head>
-  <title>Main View</title>
+<title>Department of Water Supply and Sewerage
+</title>
+  <link rel = "stylesheet" type="text/css" href = "css/bootstrap.css">
   <script src="http://openlayers.org/api/2.12/OpenLayers.js" type="text/javascript"></script>
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <link href="css/casta.css" rel="stylesheet" type="text/css" />
+  <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
+    <script src="js/config.js"></script>
+  <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+  <link rel="stylesheet" href="css/font-awesome.css" type="text/css" />
 </head>
 <body>
+
+<div>
+<div id="toolbar">
+    <div id="headerIcon"></div>
+    <div id="toobarOptions" class="toobarOptions">
+      <div class="atool" id="showMapsDiv"><i class="fa fa-map-marker fa-2x toolicon"></i><div class="atooldiv">MAP</div></div>
+      <div class="atool"  id="showToolDiv"><i class="fa fa-wrench fa-2x toolicon"></i><div class="atooldiv">TOOLS</div></div>
+      <div class="atool" id="showProjectDiv"><i class="fa fa-suitcase fa-2x toolicon"></i><div class="atooldiv">PROJECTS</div></div>
+      <div class="atool" id="showAnalysisTools"><i class="fa fa-bar-chart-o fa-2x toolicon"></i><div class="atooldiv">ANALYSIS</div></div>
+      <div class="atool" id="showAbout"><i class="fa fa-question fa-2x toolicon"></i><div class="atooldiv">ABOUT</div></div>
+      <div  id="SearchDiv" class="SearchDiv">
+          <div class="searchArea">
+              <div id="searchtypeincon" style="display:inline-block;position:absolute;left:0;top:2px;width:30px;height:20px;padding-left: 6px;">
+                  <i id="isearchtypeincon" class="fa fa-home fa-2x toolbarIconColor" title="Search by sponsor"></i>
+              </div>
+          <input type="text" id="txtSearch" data-bind="value: searchText, valueUpdate: 'afterkeydown'" />
+              <div id="searchOpts" data-bind="click: showSearchOptions">
+                  <i class="fa fa-sort-desc toolbarIconColor" id="showSearchOptsBtn" ></i></div>
+              </div>
+
+        </div>
+        </div>
+      </div>
+
+      <!-- Trigger/Open The Modal -->
   <div id = "map">
     <script type = "text/javascript">
+    OpenLayers.ProxyHost="http://116.66.198.199:8080/geoserver/cgi-bin/proxy.cgi?url=";
     var proj4326 = new OpenLayers.Projection("EPSG:4326");
     var proj3815 = new OpenLayers.Projection("EPSG:3815");
     var proj900913 = new OpenLayers.Projection("EPSG:900913");
@@ -16,6 +51,7 @@
     var map = new OpenLayers.Map('map',{
       projection:proj900913
     });
+
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     	//mapquest tiles
     	 arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
@@ -28,14 +64,12 @@
 
 
         map.addLayer(baseOSM);
-
-        // #yaha eeuta matra setBaseLayer garya chha ta
         map.setBaseLayer(baseOSM);
         //could this be error?? transformof center??
       //  map.setCenter(center.transform(proj4326,proj3815),zoom);
       // map.setCenter(center,zoom);
         map.setCenter(center.transform(proj4326,proj900913),zoom);
-        var projects = new OpenLayers.Layer.WMS("Sahalagani-projects", "http://localhost:8080/geoserver/wms",
+        var projects = new OpenLayers.Layer.WMS("Sahalagani-projects", "http://116.66.198.199:8080/geoserver/wms",
           {
             srs:'EPSG:4326',
             layers: "sahalagani:projects",
@@ -44,12 +78,23 @@
           },
           {isBaseLayer:false}
         );
-        map.addLayer(projects);
 
+        var districtTiles = new OpenLayers.Layer.XYZ('District',
+            ["https://a.tiles.mapbox.com/v4/poshan.dist-nepal/${z}/${x}/${y}.png?access_token=pk.eyJ1IjoicG9zaGFuIiwiYSI6InZ5a0dsLVkifQ.DGY81ha1q5VQpj3QA-REew"], {
+            sphericalMercator: true,
+            // tileSize: new OpenLayers.Size({ 512, 512 }),
+            wrapDateLine: true,
+            numZoomLevels: 20
+        },
+        {isBaseLayer:false}
+      );
+
+        map.addLayers([districtTiles,projects]);
+        // map.addLayer(projects);
         //adding the mouse coordinate position
         var mousepositioncontrol = new OpenLayers.Control.MousePosition({
           displayProjection: 'EPSG:4326',
-          prefix: 'EPSG:4326   ',
+          prefix: 'WGS-84   ',
           seperator: '|',
           numDigits: 4,
           emptyString: 'Move mouse over to the map area'
@@ -57,10 +102,76 @@
         map.addControl(mousepositioncontrol);
 
 
-        // map.setCenter(center,zoom);
+
+
+        //creating the map info to show some attributes
+        info = new OpenLayers.Control.WMSGetFeatureInfo({
+            url: 'http://116.66.198.199:8080/geoserver/wms',
+            title: 'Identify features by clicking',
+            queryVisible: true,
+            eventListeners: {
+                getfeatureinfo: function(event) {
+                    map.addPopup(new OpenLayers.Popup.FramedCloud(
+                        "chicken",
+                        map.getLonLatFromPixel(event.xy),
+                        null,
+                        event.text,
+                        null,
+                        true
+                    ));
+                }
+            }
+        });
+        map.addControl(info);
+        info.activate();
 
 
     </script>
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <!-- Modal content -->
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close">x </span>
+        <h2>Test Header</h2>
+      </div>
+      <div class="modal-body">
+        <p>Some text in the Modal Body</p>
+        <p>Some other text...</p>
+      </div>
+
+    </div>
+
+    <script>
+    // Get the modal
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("showMapsDiv");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    </script>
+
   </div>
-</body>
-</html>
+
+  </body>
+  </html>

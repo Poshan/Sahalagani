@@ -1,0 +1,111 @@
+body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom {
+  margin-right: 0;
+  margin-top: 0;
+}
+
+
+#toolbar{height: 46px;
+position: relative;
+left: 0;
+top: 0;
+z-index: 10;
+padding-right:10px;
+background-color: rgba(48,65,99,.9);
+padding-right:10px;
+-webkit-box-shadow: 0px 2px 9px rgba(51,51,51,.5);
+background-image: url("../img/tile.png");
+}
+
+#headerIcon{display: inline-block;
+height: 119px;
+width: 328px;
+
+position: relative;
+top: auto;
+left: 0; vertical-align: top;text-align: auto;
+background: url("../img/logo_dwss.png")  ;
+}
+.atooldiv{padding:0;position: relative;
+top: -2px;display:inline-block;}
+.SearchDiv{display:inline-block;padding-left:10px;}
+
+#txtSearch{width:170px;border:0;position: absolute;
+left: 32px;top:1px;}
+.searchArea{border:solid 1px black;width:220px;position:relative;height: 30px;background-color: white;
+display: inline-block;}
+.selSearchIcon{position: absolute;
+left: 191px;
+top: 4px;
+padding: 0 5px;}
+div.searchTypeText{display: inline-block;
+position: absolute;
+left: 32px;
+top: 3px;}
+#searchdd{position:absolute;right:-111136px;top:-111136px;background-color:white;display:block;width:220px;z-index: 12;
+border: solid rgb(48,65,99) 1px;
+padding: 2px;}
+div.searchddOpt{display:block !important;padding:5px;height:36px;line-height: 25px;position:relative;cursor:pointer;}
+div.searchddOpt:hover{background-color:#D4E3D6;}
+#showSearchOptsBtn{position: absolute;
+top: 7px;
+left: 10px;}
+.toolbarIconColor{color:rgb(48,65,99);}
+#doSearchButton{display:inline-block;height: 32px;position: relative;top: -8px;color:white;}
+#searchOpts{width:32px;display:inline-block;cursor:pointer;
+position: absolute;
+left: 190px;
+top: 0px;
+
+height: 30px;
+
+text-align: center;
+}
+
+.atool{display:inline-block;padding: 0 10px 0 10px;cursor:pointer;color:#2D3E60;top: -6px;position: relative;color:white;}
+.toobarOptions{display:inline-block;position:relative;right: 10px;padding: 5px;height:35px;margin-left: -104px;
+top: 0px;
+float: right;
+font-size: 12px;}
+
+/* Modal Header */
+.modal-header {
+    padding: 2px 16px;
+    background-color: rgba(48,65,99,.9);
+    color: white;
+}
+
+/* Modal Body */
+.modal-body {padding: 2px 16px;}
+
+/* Modal Footer */
+.modal-footer {
+    padding: 2px 16px;
+    background-color: #5cb85c;
+    color: white;
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 25%;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
+
+@keyframes animatetop {
+    from {top: -300px; opacity: 0}
+    to {top: 0; opacity: 1}
+}
