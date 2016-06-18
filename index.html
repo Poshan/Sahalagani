@@ -2,15 +2,20 @@
 <head>
 <title>Department of Water Supply and Sewerage
 </title>
-  <link rel = "stylesheet" type="text/css" href = "css/bootstrap.css">
+  <script type="text/javascript" src="js/jquery.js"></script>
+  <link rel = "stylesheet" type="text/css" href = "css/bootstrap.min.css">
   <script src="http://openlayers.org/api/2.12/OpenLayers.js" type="text/javascript"></script>
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/bootstrap.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <link href="css/casta.css" rel="stylesheet" type="text/css" />
   <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css">
     <script src="js/config.js"></script>
   <link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
   <link rel="stylesheet" href="css/font-awesome.css" type="text/css" />
+
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
 </head>
 <body>
 
@@ -40,7 +45,10 @@
       <!-- Trigger/Open The Modal -->
   <div id = "map">
     <script type = "text/javascript">
-    OpenLayers.ProxyHost="http://116.66.198.199/cgi-bin/proxy.cgi?url=";
+    $('#popUpContent').load(function(){
+      console.log('popup clicked')
+    })
+    OpenLayers.ProxyHost="http://gis.dwss.gov.np/cgi-bin/proxy.cgi?url=";
     var proj4326 = new OpenLayers.Projection("EPSG:4326");
     var proj3815 = new OpenLayers.Projection("EPSG:3815");
     var proj900913 = new OpenLayers.Projection("EPSG:900913");
@@ -69,14 +77,23 @@
       //  map.setCenter(center.transform(proj4326,proj3815),zoom);
       // map.setCenter(center,zoom);
         map.setCenter(center.transform(proj4326,proj900913),zoom);
+
+
+        var size = new OpenLayers.Size(21,25);
+        var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+        var iconMap = new OpenLayers.Icon('/img/marker.png', size, offset);
+
         var projects = new OpenLayers.Layer.WMS("Sahalagani-projects", "http://116.66.198.199:8080/geoserver/wms",
           {
             srs:'EPSG:4326',
             layers: "sahalagani:projects1",
             format:'image/png',
-            transparent:true
+            transparent:true,
           },
-          {isBaseLayer:false}
+          {
+            isBaseLayer:false,
+            icon: iconMap
+          }
         );
 
         var districtTiles = new OpenLayers.Layer.XYZ('District',
@@ -103,7 +120,32 @@
           emptyString: 'Move mouse over to the map area'
         });
         map.addControl(mousepositioncontrol);
+        //working here
 
+
+        function createpopup(incomming){
+          //check if incomming is null
+          var retval = '<div id="popUpContent"><ul id="tabs" class="nav nav-tabs" data-tabs = "tabs">';
+          retval +=  '<li class="nav active"><a href="#general" data-toggle="tab">General Information</a></li>';
+          retval +=  '<li class = "nav"><a href="#location" data-toggle="tab">Location Information</a></li>';
+          retval +=  '<li class = "nav"><a href="#detailed" data-toggle="tab">Detailed Information</a></li>';
+          retval += '</ul>';
+          retval += '<div id="my-tab-content" class="tab-content">';
+          retval +='<div class="tab-pane active" id="general">';
+          retval +=      '<h1>Projet Information</h1>';
+          retval +=      '<p>Project Name</p>';
+          retval +=      '</div>';
+          retval +=      '<div class="tab-pane" id="location">';
+          retval +=      '<h1>Location Information</h1>';
+          retval +=      '<p>Place</p>';
+          retval +=      '</div>';
+          retval +=      '<div class="tab-pane" id="detailed">';
+          retval +=      '<h1>Detailed Information</h1>';
+          retval +=      '<p>Other Details of Project</p>';
+          retval +=      '</div>';
+          retval +=      '</div></div>';
+          return retval;
+        }
 
 
 
@@ -111,20 +153,31 @@
         info = new OpenLayers.Control.WMSGetFeatureInfo({
             url: 'http://116.66.198.199:8080/geoserver/wms',
             title: 'Identify features by clicking',
-            queryVisible: true,
+            // queryVisible: true,
+            infoFormat:'application/json',
+            format: new OpenLayers.Format.JSON,
             eventListeners: {
                 getfeatureinfo: function(event) {
+                  //check if event is null
+                  a = JSON.parse(event.text).features;
+                  if ((a.length) == 0){
+
+                  }
+                  else{
+                    debugger;
                     map.addPopup(new OpenLayers.Popup.FramedCloud(
                         "chicken",
                         map.getLonLatFromPixel(event.xy),
                         null,
-                        event.text,
+                        createpopup(event),
                         null,
                         true
                     ));
                 }
+              }
             }
         });
+
         map.addControl(info);
         info.activate();
 
