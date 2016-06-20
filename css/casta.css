@@ -2,7 +2,18 @@ body.modal-open, .modal-open .navbar-fixed-top, .modal-open .navbar-fixed-bottom
   margin-right: 0;
   margin-top: 0;
 }
-
+.olImageLoadError {
+    /* when OL encounters a 404, don't display the pink image */
+    display: none !important;
+} 
+#exTab1 .tab-content {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+#exTab1 .nav-pills > li > a {
+  border-radius: 0;
+}
 .olImageLoadError {
     /* when OL encounters a 404, don't display the pink image */
     display: none !important;
