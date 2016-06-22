@@ -135,46 +135,108 @@
 
 
         function createpopup(incomming){
+
+          var a = JSON.parse(incomming.text);
+          var b = a.features[0].properties;
+          //general Information regarding the project
+          var nepaliName = b.nepaliname;
+          var englishName = b.englishnam;
+
+          //Location Information of the project
+          var district = b.district;
+          var vdc = b.vdc;
+          var ward = b.ward;
+
+          //detailed Information
+          var household = b.household;
+          var phase = b.phase;
+          var population = b.population;
+          var publictaps = b.publictaps;
+          var phase = b.phase;
+          var startdate = b.startdate;
+          var taps = b.taps;
+          var usercomm = b.usercomm;
+          //chcek the null values and reset to N/A
+
           //check if incomming is null
           var retval = '<div id="popUpContent"><ul id="tabs" class="nav nav-tabs" data-tabs = "tabs">';
           retval +=  '<li class="active"><a href="#general" data-toggle="tab">General</a></li>';
           retval +=  '<li><a href="#location" data-toggle="tab">Location Information</a></li>';
           retval +=  '<li><a href="#detailed" data-toggle="tab">Detailed Information</a></li>';
+          retval +=  '<li><a href="#images" data-toggle="tab">Photos</a></li>';
           retval += '</ul>';
           retval += '<div id="my-tab-content" class="tab-content">';
           retval +='<div class="tab-pane active" id="general">';
-          retval +=      '<h1>Projet Information</h1>';
-          retval +=      '<p>Project Name</p>';
-          retval +=      '</div>';
-          retval +=      '<div class="tab-pane" id="location">';
-          retval +=      '<h1>Location Information</h1>';
-          retval +=      '<p>Place</p>';
-          retval +=      '</div>';
-          retval +=      '<div class="tab-pane" id="detailed">';
+          retval += '<h1>Projet Information</h1>';
+          retval += '<table class="table table-sm"><thead></thead>';
+          retval += '<tbody><tr>';
+          retval += '<th scope="row">1</th>';
+          retval += '<td>Project Name</td>';
+          retval +=  '<td>';
+          retval += englishName;
+          retval += '</td>'
+          retval +=  '</tr>';
+          retval +=  '<tr><th scope="row">2</th><td>';
+          retval += 'Nepali Name';
+          retval += '</td><td>';
+          retval += nepaliName;
+          retval += '</td></tr>';
+          retval += '</tbody>';
+          retval += '</table>';
+          retval +=  '</div>';
+          retval +=   '<div class="tab-pane" id="location">';
+          retval +=   '<h1>Location Information</h1>';
+          retval += '<table class="table table-sm"><thead></thead>';
+          retval += '<tbody><tr>';
+          retval += '<th scope="row">1</th>';
+          retval += '<td>District</td>';
+          retval +=  '<td>';
+          retval += district;
+          retval += '</td>'
+          retval +=  '</tr>';
+          retval +=  '<tr><th scope="row">2</th><td>';
+          retval += 'VDC';
+          retval += '</td><td>';
+          retval += vdc;
+          retval += '</td></tr>';
+          retval +=  '<tr><th scope="row">3</th><td>';
+          retval += 'Ward';
+          retval += '</td><td>';
+          retval += ward;
+          retval += '</td></tr>';
+          retval += '</tbody>';
+          retval += '</table>';
+          retval +=   '</div>';
+          retval +=    '<div class="tab-pane" id="detailed">';
           retval +=      '<h1>Detailed Information</h1>';
-          retval +=      '<p>Other Details of Project</p>';
+          retval +=  '<p>Other Details of Project</p>';
+          retval += '<table class="table table-sm"><thead></thead>';
+          retval += '<tbody><tr>';
+          retval += '<th scope="row">1</th>';
+          retval += '<td>Population Affected</td>';
+          retval +=  '<td>';
+          retval += population;
+          retval += '</td>'
+          retval +=  '</tr>';
+          retval +=  '<tr><th scope="row">2</th><td>';
+          retval += 'No. of Taps';
+          retval += '</td><td>';
+          retval += taps;
+          retval += '</td></tr>';
+          retval +=  '<tr><th scope="row">3</th><td>';
+          retval += 'Household Affected';
+          retval += '</td><td>';
+          retval += household;
+          retval += '</td></tr>';
+          retval += '</tbody>';
+          retval += '</table>';
+          retval +=      '</div>';
+          retval +=      '<div class="tab-pane" id="images">';
+          retval +=      '<h1>Project Pictures</h1>';
+          retval +=      '<p>Photos of project</p>';
           retval +=      '</div>';
           retval +=      '</div></div>';
-          $('.nav-tabs a').trigger("click");
           return retval;
-          // var ret = '<div id="tabs" style="width: 100%;"></div>';
-          // ret += '<div id="selected-tab" style="padding: 10px 0px">tab1</div>';
-          // $(function () {
-          //   $('#tabs').w2tabs({
-          //         name: 'tabs',
-          //         active: 'tab1',
-          //         tabs: [
-          //             { id: 'tab1', caption: 'Tab 1' },
-          //             { id: 'tab2', caption: 'Tab 2' },
-          //             { id: 'tab3', caption: 'Tab 3' },
-          //             { id: 'tab4', caption: 'Tab 4' }
-          //         ],
-          //         onClick: function (event) {
-          //             $('#selected-tab').html(event.target);
-          //         }
-          //     });
-          // });
-          // return ret
         }
 
 
@@ -193,7 +255,7 @@
                   //check if event is null
                   a = JSON.parse(event.text).features;
                   if ((a.length) == 0){
-
+                    console.log('no features available in the clicked area');
                   }
                   else{
                     map.addPopup(new OpenLayers.Popup.FramedCloud(
