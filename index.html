@@ -20,7 +20,12 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-
+<script>
+  function toTitleCase(str)
+		{
+		    return str?str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();}):"";
+		}
+</script>
 
 </head>
 <body>
@@ -51,6 +56,10 @@
       <!-- Trigger/Open The Modal -->
   <div id = "map">
     <script type = "text/javascript">
+    function onPopupClose(evt) {
+            console.log('closed the popup');
+            map.removePopup(map.popups[0]);
+        }
 
     OpenLayers.ProxyHost="http://gis.dwss.gov.np/cgi-bin/proxy.cgi?url=";
     var proj4326 = new OpenLayers.Projection("EPSG:4326");
@@ -113,7 +122,7 @@
            this.src = "images/blank.png";
       };
       OpenLayers.Util.onImageLoadErrorColor = "transparent";
-        map.addLayers([districtTiles,projects]);
+      map.addLayers([districtTiles,projects]);
         // map.addLayer(projects);
         //adding the mouse coordinate position
         var mousepositioncontrol = new OpenLayers.Control.MousePosition({
@@ -134,111 +143,104 @@
 
 
 
-        function createpopup(incomming){
-
-          var a = JSON.parse(incomming.text);
-          var b = a.features[0].properties;
-          //general Information regarding the project
-          var nepaliName = b.nepaliname;
-          var englishName = b.englishnam;
-
-          //Location Information of the project
-          var district = b.district;
-          var vdc = b.vdc;
-          var ward = b.ward;
-
-          //detailed Information
-          var household = b.household;
-          var phase = b.phase;
-          var population = b.population;
-          var publictaps = b.publictaps;
-          var phase = b.phase;
-          var startdate = b.startdate;
-          var taps = b.taps;
-          var usercomm = b.usercomm;
-          //chcek the null values and reset to N/A
-
-          //check if incomming is null
-          var retval = '<div id="popUpContent"><ul id="tabs" class="nav nav-tabs" data-tabs = "tabs">';
-          retval +=  '<li class="active"><a href="#general" data-toggle="tab">General</a></li>';
-          retval +=  '<li><a href="#location" data-toggle="tab">Location Information</a></li>';
-          retval +=  '<li><a href="#detailed" data-toggle="tab">Detailed Information</a></li>';
-          retval +=  '<li><a href="#images" data-toggle="tab">Photos</a></li>';
-          retval += '</ul>';
-          retval += '<div id="my-tab-content" class="tab-content">';
-          retval +='<div class="tab-pane active" id="general">';
-          retval += '<h1>Projet Information</h1>';
-          retval += '<table class="table table-sm"><thead></thead>';
-          retval += '<tbody><tr>';
-          retval += '<th scope="row">1</th>';
-          retval += '<td>Project Name</td>';
-          retval +=  '<td>';
-          retval += englishName;
-          retval += '</td>'
-          retval +=  '</tr>';
-          retval +=  '<tr><th scope="row">2</th><td>';
-          retval += 'Nepali Name';
-          retval += '</td><td>';
-          retval += nepaliName;
-          retval += '</td></tr>';
-          retval += '</tbody>';
-          retval += '</table>';
-          retval +=  '</div>';
-          retval +=   '<div class="tab-pane" id="location">';
-          retval +=   '<h1>Location Information</h1>';
-          retval += '<table class="table table-sm"><thead></thead>';
-          retval += '<tbody><tr>';
-          retval += '<th scope="row">1</th>';
-          retval += '<td>District</td>';
-          retval +=  '<td>';
-          retval += district;
-          retval += '</td>'
-          retval +=  '</tr>';
-          retval +=  '<tr><th scope="row">2</th><td>';
-          retval += 'VDC';
-          retval += '</td><td>';
-          retval += vdc;
-          retval += '</td></tr>';
-          retval +=  '<tr><th scope="row">3</th><td>';
-          retval += 'Ward';
-          retval += '</td><td>';
-          retval += ward;
-          retval += '</td></tr>';
-          retval += '</tbody>';
-          retval += '</table>';
-          retval +=   '</div>';
-          retval +=    '<div class="tab-pane" id="detailed">';
-          retval +=      '<h1>Detailed Information</h1>';
-          retval +=  '<p>Other Details of Project</p>';
-          retval += '<table class="table table-sm"><thead></thead>';
-          retval += '<tbody><tr>';
-          retval += '<th scope="row">1</th>';
-          retval += '<td>Population Affected</td>';
-          retval +=  '<td>';
-          retval += population;
-          retval += '</td>'
-          retval +=  '</tr>';
-          retval +=  '<tr><th scope="row">2</th><td>';
-          retval += 'No. of Taps';
-          retval += '</td><td>';
-          retval += taps;
-          retval += '</td></tr>';
-          retval +=  '<tr><th scope="row">3</th><td>';
-          retval += 'Household Affected';
-          retval += '</td><td>';
-          retval += household;
-          retval += '</td></tr>';
-          retval += '</tbody>';
-          retval += '</table>';
-          retval +=      '</div>';
-          retval +=      '<div class="tab-pane" id="images">';
-          retval +=      '<h1>Project Pictures</h1>';
-          retval +=      '<p>Photos of project</p>';
-          retval +=      '</div>';
-          retval +=      '</div></div>';
-          return retval;
-        }
-
+        // function createpopup(incomming){
+        //
+        //   var a = JSON.parse(incomming.text);
+        //   var b = a.features[0].properties;
+        //   //general Information regarding the project
+        //   var nepaliName = b.nepaliname;
+        //   var englishName = b.englishnam;
+        //
+        //   //Location Information of the project
+        //   var district = b.district;
+        //   var vdc = b.vdc;
+        //   var ward = b.ward;
+        //
+        //   //detailed Information
+        //   var household = b.household;
+        //   var phase = b.phase;
+        //   var population = b.population;
+        //   var publictaps = b.publictaps;
+        //   var phase = b.phase;
+        //   var startdate = b.startdate;
+        //   var taps = b.taps;
+        //   var usercomm = b.usercomm;
+        //   //chcek the null values and reset to N/A
+        //
+        //   //check if incomming is null
+        //   var retval = '<div id="popUpContent"><ul id="tabs" class="nav nav-tabs" data-tabs = "tabs">';
+        //   retval +=  '<li class="active"><a href="#general" data-toggle="tab">General</a></li>';
+        //   retval +=  '<li><a href="#location" data-toggle="tab">Location Information</a></li>';
+        //   retval +=  '<li><a href="#detailed" data-toggle="tab">Detailed Information</a></li>';
+        //   retval +=  '<li><a href="#images" data-toggle="tab">Photos</a></li>';
+        //   retval += '</ul>';
+        //   retval += '<div id="my-tab-content" class="tab-content">';
+        //   retval +='<div class="tab-pane active" id="general">';
+        //   retval += '<h1>Projet Information</h1>';
+        //   retval += '<table border="1">';
+        //   retval += '<tr>';
+        //   retval += '<td>Project Name</td>';
+        //   retval += '<td>';
+        //   retval += englishName;
+        //   retval += '</td>';
+        //   retval += '</tr>';
+        //   retval += '<tr>';
+        //   retval += '<td>Nepali Name</td>';
+        //   retval += '<td>';
+        //   retval += nepaliName;
+        //   retval += '</td>';
+        //   retval += '</tr>';
+        //   retval += '</table>';
+        //   retval +=   '</div>';
+        //   retval += '<div id="my-tab-content" class="tab-content">';
+        //   retval +='<div class="tab-pane active" id="location">';
+        //   retval += '<h1>Location Information</h1>';
+        //   retval += '<table border="1">';
+        //   retval += '<tr>';
+        //   retval += '<td>District</td>';
+        //   retval += '<td>';
+        //   retval += district;
+        //   retval += '</td>';
+        //   retval += '</tr>';
+        //   retval += '<tr>';
+        //   retval += '<td>VDC</td>';
+        //   retval += '<td>';
+        //   retval += vdc;
+        //   retval += '</td>';
+        //   retval += '</tr>';
+        //   retval += '</table>';
+        //   retval +=   '</div>';
+        //   retval +=    '<div class="tab-pane" id="detailed">';
+        //   retval +=      '<h1>Detailed Information</h1>';
+        //   retval +=  '<p>Other Details of Project</p>';
+        //   retval += '<table border="1">';
+        //   retval += '<tr>';
+        //   retval += '<td>Population Affected</td>';
+        //   retval += '<td>';
+        //   retval += population;
+        //   retval += '</td>'
+        //   retval +=  '</tr>';
+        //   retval += '<tr>';
+        //   retval += '<td>No of Taps</td>';
+        //   retval += '<td>';
+        //   retval += taps;
+        //   retval += '</td>'
+        //   retval +=  '</tr>';
+        //   retval += '<tr>';
+        //   retval += '<td>Household Affected</td>';
+        //   retval += '<td>';
+        //   retval += household;
+        //   retval += '</td>'
+        //   retval +=  '</tr>';
+        //   retval += '</table>';
+        //   retval +=      '</div>';
+        //   retval +=      '<div class="tab-pane" id="images">';
+        //   retval +=      '<h1>Project Pictures</h1>';
+        //   retval +=      '<p>Photos of project</p>';
+        //   retval +=      '</div>';
+        //   retval +=      '</div></div>';
+        //   return retval;
+        // }
 
 
 
@@ -252,32 +254,90 @@
             format: new OpenLayers.Format.JSON,
             eventListeners: {
                 getfeatureinfo: function(event) {
+
+                  //check if any popup is running
+                  if (map.popups.length > 0){
+                    for (var i = 0; i < map.popups.length; i++) {
+                      map.removePopup(map.popups[i]);
+                    }
+                  }
+                  var a = JSON.parse(event.text).features;
+                  var PopupPos, leftOffset = 45, topOffset = 55, rightOffset=0;
+          		    var MapExtent = map.getExtent();
+          		    var Reso = map.getResolution();
+          		    var MapXCenter = map.getExtent().getCenterPixel().x;
+          		    // var FeatureXPos = event.geometry.getBounds().getCenterPixel().x;
+                  var FeatureXPos = event.xy.x;
+          		    var bLeft = (FeatureXPos >= MapXCenter);
+
                   //check if event is null
-                  a = JSON.parse(event.text).features;
+                  var a = JSON.parse(event.text).features;
                   if ((a.length) == 0){
                     console.log('no features available in the clicked area');
                   }
                   else{
-                    map.addPopup(new OpenLayers.Popup.FramedCloud(
-                        "chicken",
-                        map.getLonLatFromPixel(event.xy),
-                        null,
-                        createpopup(event),
-                        null,
-                        true
-                    ));
-                    $('.nav-tabs a').click (function(){
-                      console.log('this fn executed');
-                      $(this).tab('show');
-                  });
+                    var c = JSON.parse(event.text);
+                    var b = c.features[0].properties;
+                    debugger;
+                    var popup_content="";
+          			    popup_content+="<div class='CSSTableGenerator'>";
+          			    popup_content+="<table>";
+          			    popup_content+="<tr><td colspan='2'>Details</td></tr>"
+          			    popup_content+="<tr><td>Name</td><td>"+ b.englishname + "</td></tr>";
+          			 	popup_content +="<tr><td>Nepali Name</td><td>"+ b.nepaliname +"</td></tr>";
+          			 	popup_content +="<tr><td>Population Affected</td><td>" + b.population +"</td></tr>";
+          			 	popup_content +="<tr><td>Household Affected</td><td>"+b.household+"</td></tr>";
+          			 	// popup_content +="<tr><td>Facilities</td><td>"+((feature.attributes.facility_x=="yes")?"X Ray<br>":"")+((feature.attributes.facility_i=="yes")?"ICU / CCU<br>":"")+((feature.attributes.facility_v=="yes")?"Ventilator<br>":"")+((feature.attributes.facility_o=="yes")?"Operating theatre":"")+"</td></tr>";
+          		    	popup_content+="</table>";
+          		    	popup_content +="</div>";
+          			    if(bLeft){ // popup appears top-left position
+          			        PopupPos = new OpenLayers.LonLat(MapExtent.left,MapExtent.top);
+          			        PopupPos.lon += leftOffset * Reso;
+          			    }
+          			    else { // popup appears top-right position
+          			        PopupPos = new OpenLayers.LonLat(MapExtent.right,MapExtent.top);
+          			        PopupPos.lon -= rightOffset * Reso;
+          			    }
+
+          			       PopupPos.lat -= topOffset * Reso;
+
+          	            var popup = new OpenLayers.Popup.Anchored("chicken",
+          	                                     PopupPos,
+          	                                     new OpenLayers.Size(250.225),
+          	                                     popup_content,
+          	                                     null, false, onPopupClose);
+          	            // feature.popup = popup;
+          	            map.addPopup(popup);
+          	            popup.div.style.borderRadius="15px";
+          	            popup.draw();
+          	            // debugger;
+                  	}
+                  //   $('.nav-tabs a').click (function(){
+                  //     console.log('this fn executed');
+                  //     $(this).tab('show');
+                  // });
                 }
               }
-            }
-        });
+            });
 
 
         map.addControl(info);
         info.activate();
+      //   function onFeatureSelect(feature){
+      //     debugger;
+      //   }
+      //   function onFeatureUnselect(feature){
+      //
+      //   }
+      //
+      //   selectControl = new OpenLayers.Control.SelectFeature(projects,{
+			// 	    onSelect: onFeatureSelect,
+      //   		onUnselect: onFeatureUnselect,
+      //       hover
+    	// 	});
+      //
+      // map.addControl(selectControl);
+     // 	selectControl.activate();
 
 
     </script>
@@ -325,7 +385,7 @@
     </script>
 
   </div>
-
+<link rel="stylesheet" type="text/css" href="css/popup-table.css"/>
 
   </body>
   </html>
