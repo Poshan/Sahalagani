@@ -261,14 +261,7 @@
                       map.removePopup(map.popups[i]);
                     }
                   }
-                  var a = JSON.parse(event.text).features;
-                  var PopupPos, leftOffset = 45, topOffset = 55, rightOffset=0;
-          		    var MapExtent = map.getExtent();
-          		    var Reso = map.getResolution();
-          		    var MapXCenter = map.getExtent().getCenterPixel().x;
-          		    // var FeatureXPos = event.geometry.getBounds().getCenterPixel().x;
-                  var FeatureXPos = event.xy.x;
-          		    var bLeft = (FeatureXPos >= MapXCenter);
+
 
                   //check if event is null
                   var a = JSON.parse(event.text).features;
@@ -276,9 +269,23 @@
                     console.log('no features available in the clicked area');
                   }
                   else{
+                    var a = JSON.parse(event.text).features;
+                    var PopupPos, leftOffset = 45, topOffset = 55, rightOffset=0;
+            		    var MapExtent = map.getExtent();
+            		    var Reso = map.getResolution();
+            		    var MapXCenter = map.getExtent().getCenterPixel().x;
+            		    // var FeatureXPos = event.geometry.getBounds().getCenterPixel().x;
+                    // var FeatureXPos = event.xy.x;
+                    // var p = JSON.parse(event.text);
+                    var q = a.features[0].geometry.coordinates;
+                    var s = new OpenLayers.LonLat(q);
+                    var t = s.transform(proj4326,proj900913);
+                    var FeatureXPos = t.lon;
+                    debugger;
+            		    var bLeft = (FeatureXPos >= MapXCenter);
                     var c = JSON.parse(event.text);
                     var b = c.features[0].properties;
-                    debugger;
+                    // debugger;
                     var popup_content="";
           			    popup_content+="<div class='CSSTableGenerator'>";
           			    popup_content+="<table>";
