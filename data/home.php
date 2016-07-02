@@ -397,7 +397,7 @@ $(document).ready(function () {
 
           </ul>
 		  <ul class = "nav navbar-nav">
-			<li class="active"><a id = "edit" href="#">Edit Data</a></li>
+			<li class="active"><a id = "edit" href="edit.php">Edit Data</a></li>
 		  </ul>
           <ul class="nav navbar-nav navbar-right">
 
