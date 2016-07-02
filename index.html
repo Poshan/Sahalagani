@@ -34,8 +34,8 @@
 <div id="toolbar">
     <div id="headerIcon"></div>
     <div id="toobarOptions" class="toobarOptions">
-      <div class="atool" id="showMapsDiv"><i class="fa fa-map-marker fa-2x toolicon"></i><div class="atooldiv">MAP</div></div>
-      <div class="atool"  id="showToolDiv"><i class="fa fa-wrench fa-2x toolicon"></i><div class="atooldiv">TOOLS</div></div>
+    <div class="atool" id="showMapsDiv"><i class="fa fa-map-marker fa-2x toolicon"></i><div class="atooldiv">MAP</div></div>
+     <a href="data/index.php"> <div class="atool"  id="showToolDiv"><i class="fa fa-wrench fa-2x toolicon"></i><div class="atooldiv">ADMIN TOOLS</div></div></a>
       <div class="atool" id="showProjectDiv"><i class="fa fa-suitcase fa-2x toolicon"></i><div class="atooldiv">PROJECTS</div></div>
       <div class="atool" id="showAnalysisTools"><i class="fa fa-bar-chart-o fa-2x toolicon"></i><div class="atooldiv">ANALYSIS</div></div>
       <div class="atool" id="showAbout"><i class="fa fa-question fa-2x toolicon"></i><div class="atooldiv">ABOUT</div></div>
@@ -243,7 +243,7 @@
         // }
 
         function checkNa(item){
-          debugger;
+          //debugger;
           if (item == null){ return "N/A";}
           else{ return item; }
         }
@@ -258,7 +258,7 @@
             format: new OpenLayers.Format.JSON,
             eventListeners: {
                 getfeatureinfo: function(event) {
-
+					debugger;
                   //check if any popup is running
                   if (map.popups.length > 0){
                     for (var i = 0; i < map.popups.length; i++) {
@@ -289,23 +289,27 @@
                     // var c = JSON.parse(event.text);
                     debugger;
                     var b = a[0].properties;
+                    keys = Object.keys(b);
                     // debugger;
                     var popup_content="";
           			    popup_content+="<div class='CSSTableGenerator'>";
           			    popup_content+="<table>";
           			    popup_content+="<tr><td colspan='2'>Details</td></tr>"
-          			    popup_content+="<tr><td>Name</td><td>"+ checkNa(b.englishname) + "</td></tr>";
+                    for (var i = 0; i < keys.length; i++) {
+                      popup_content+="<tr><td>"+keys[i]+"</td><td>"+ checkNa(b[keys[i]]) + "</td></tr>";
+                    }
+          			    /*popup_content+="<tr><td>Name</td><td>"+ checkNa(b.englishnam) + "</td></tr>";
           			 	popup_content +="<tr><td>Nepali Name</td><td>"+ checkNa(b.nepaliname) +"</td></tr>";
                   popup_content +="<tr><td>District</td><td>"+ checkNa(b.district) +"</td></tr>";
                   popup_content +="<tr><td>VDC</td><td>"+ checkNa(b.vdc) +"</td></tr>";
-                  popup_content +="<tr><td>Ward</td><td>"+ checkNa(b.ward) +"</td></tr>";
+                  popup_content +="<tr><td>Ward</td><td>"+ checkNa(b.wards) +"</td></tr>";
           			 	popup_content +="<tr><td>Population Affected</td><td>" + checkNa(b.population) +"</td></tr>";
           			 	popup_content +="<tr><td>Household Affected</td><td>"+checkNa(b.household)+"</td></tr>";
                   popup_content +="<tr><td>Start Date</td><td>"+ checkNa(b.startdate) +"</td></tr>";
                   popup_content +="<tr><td>No.of Taps</td><td>"+ checkNa(b.taps) +"</td></tr>";
                   popup_content +="<tr><td>Public Taps</td><td>"+ checkNa(b.publictaps) +"</td></tr>";
                   popup_content +="<tr><td>Project Phase</td><td>"+ checkNa(b.phase) +"</td></tr>";
-                  popup_content +="<tr><td>User Community</td><td>"+ checkNa(b.usercomm) +"</td></tr>";
+                  popup_content +="<tr><td>User Community</td><td>"+ checkNa(b.usercomm) +"</td></tr>";*/
           			 	// popup_content +="<tr><td>Facilities</td><td>"+((feature.attributes.facility_x=="yes")?"X Ray<br>":"")+((feature.attributes.facility_i=="yes")?"ICU / CCU<br>":"")+((feature.attributes.facility_v=="yes")?"Ventilator<br>":"")+((feature.attributes.facility_o=="yes")?"Operating theatre":"")+"</td></tr>";
           		    	popup_content+="</table>";
           		    	popup_content +="</div>";
@@ -360,7 +364,7 @@
 
 
     </script>
-    <div id="myModal" class="modal">
+  <div id="myModal" class="modal">
       <!-- Modal content -->
       <!-- Modal content -->
     <div class="modal-content">
@@ -375,31 +379,34 @@
 
     </div>
     <script>
+  //  $("#showMapsDiv").on('click', function(){
+    // window.location = "data.html";
+//});
     // Get the modal
-    var modal = document.getElementById('myModal');
+    //var modal = document.getElementById('myModal');
 
     // Get the button that opens the modal
-    var btn = document.getElementById("showMapsDiv");
+  //  var btn = document.getElementById("showMapsDiv");
 
     // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+  //  var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks on the button, open the modal
-    btn.onclick = function() {
-        modal.style.display = "block";
-    }
+  //  btn.onclick = function() {
+  //      modal.style.display = "block";
+  //  }
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
+  //  span.onclick = function() {
+    //    modal.style.display = "none";
+  //  }
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+//    window.onclick = function(event) {
+//        if (event.target == modal) {
+  //          modal.style.display = "none";
+  //      }
+  //  }
 
     </script>
 

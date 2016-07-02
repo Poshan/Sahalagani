@@ -289,13 +289,93 @@ body{
 </head>
 <script>
 $(document).ready(function () {
+	//nepali date start date
 	$('#start-date').nepaliDatePicker({
 		ndpEnglishInput: 'englishDate'
 	});
+
+	//nepali date project completion date
 	$('#termination-date').nepaliDatePicker({
 		ndpEnglishInput: 'englishDate'
 	});
+	$('#edit').click(function(){
+		//get the first element
+		alert('pretty incredible');
+	})
+	//form submit click
+	$('#FSsubmit').click(function(){
+		// console.log('checking the forms filled')
+		var pName = $('#RESULT_TextField-0').val();
+		var npName = $('#RESULT_TextField-1').val();
+		var district = $('#RESULT_TextField-2').val();
+		var vdc = $('#RESULT_TextField-3').val();
+		var ward = $('#RESULT_TextField-4').val();
+		var population = $('#RESULT_TextField-5').val();
+		var household = $('#RESULT_TextField-6').val();
+		var taps = $('#RESULT_TextField-7').val();
+		var pTaps = $('#RESULT_TextField-8').val();
+		var pPhase = $('#RESULT_RadioButton-9').val();
+		var sDate = $('#start-date').val();
+		var cDate = $('#termination-date').val();
+		var location = $('#RESULT_TextField-12').val();
+		//debugger;
+		 if (pName.length == 0){
+		 	alert('Please Enter Name of Project');
+		 }
+		 else if (npName.length == 0) {
+		 	alert('Please Enter Nepali Name of Project');
+		 }
+		 else if (district.length == 0) {
+		 	alert('Please Enter District');
+		 }
+		 else if (vdc.length == 0) {
+		 	alert('Please Enter VDC');
+		 }
+		 else if (ward.length == 0) {
+		 	alert('Please Enter Ward');
+		 }
+		 else if (pPhase.length == 0) {
+		 	alert('Please Enter Phase');
+		 }
+		 else if (sDate.length == 0) {
+		 	alert('Please Enter Project Start Date');
+		 }
+		 else if (location.length == 0) {
+		 	alert('Enter the Coordinates');
+		 }
+		else{
+			$.ajax({
+				url: "insertion.php",
+				method: "POST",
+				data: {
+					name: pName,
+					nepname: npName,
+					district: district,
+					vdc: vdc,
+					ward: ward,
+					population: population,
+					household: household,
+					taps: taps,
+					pubTaps: pTaps,
+					phase: pPhase,
+					startdate: sDate,
+					completionDate: cDate,
+					location: location
+				},
+				datatype: 'json',
+				success: function(data){
+					debugger;
+					alert('data entered successfully');
+					//debugger;
+				},
+				error: function(xhr, textStatus, errorThrown){
+				   alert('request failed');
+				}
+			});
+		 }
+	});
 });
+
 </script>
 
 <body>
@@ -309,12 +389,16 @@ $(document).ready(function () {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="http://gis.dwss.gov.np/sahalagani">Add New Projects</a>
+          <a class="navbar-brand" href="#">Add New Projects</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="http://gis.dwss.gov.np/sahalagani">Back to Maps</a></li>
+
           </ul>
+		  <ul class = "nav navbar-nav">
+			<li class="active"><a id = "edit" href="#">Edit Data</a></li>
+		  </ul>
           <ul class="nav navbar-nav navbar-right">
 
             <li class="dropdown">
@@ -337,7 +421,8 @@ $(document).ready(function () {
 
     <div class="container">
         <!--addition module here-->
-		<form method="post" id="FSForm" action="https://fs10.formsite.com/res/submit" enctype="application/x-www-form-urlencoded" onsubmit="return Vromansys.Form.processSubmit(this);">
+		<!--<form method="post" id="FSForm" action="insertion.php" enctype="application/x-www-form-urlencoded" onsubmit="">-->
+		<form method="post" id="FSForm" onsubmit="">
 <div style="display:none;">
 <input type="hidden" name="locid" value="poshan/form1" />
 <input type="hidden" name="EParam" value="AT1kKIiyxDzcpZ7AcjbkP6eLTfEDMMCuUSAE7pKjsPfOhm66yTYozk9d2/tfkxg1" />
@@ -443,6 +528,10 @@ $(document).ready(function () {
 </div>
 <div class="clear"></div>
 
+<div id = 'newField' class = "q">
+	<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+</div>
+<div class="clear"></div>
 </div>
 <!-- END_ITEMS -->
 <input type="hidden" name="EParam" value="FzpUCZwnDno=" />
