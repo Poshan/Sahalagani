@@ -300,7 +300,7 @@ $(document).ready(function () {
 	});
 	$('#edit').click(function(){
 		//get the first element
-		alert('pretty incredible');
+		alert('edit mode');
 	})
 	//form submit click
 	$('#FSsubmit').click(function(){
@@ -369,7 +369,7 @@ $(document).ready(function () {
 					//debugger;
 				},
 				error: function(xhr, textStatus, errorThrown){
-				   alert('request failed');
+				   alert(errorThrown)
 				}
 			});
 		 }
