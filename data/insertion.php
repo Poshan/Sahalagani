@@ -69,9 +69,9 @@
   $plusone = $intval + 1;
 
 
-	$sql = "INSERT INTO projects(projectid, englishnam, nepaliname, phase, startdate, completion, district, vdc, wards, population, household, geom) VALUES('$plusone', '$pName', '$npName', '$pPhase', '$sDate', '$cDate', '$district', '$vdc', '$ward', '$population', '$household', ST_SetSRID(ST_MakePoint($long, $lat), 4326))";
+	$sql = "INSERT INTO projects(projectid, englishnam, nepaliname, phase, startdate, completion, district, vdc, wards, population, household, taps, publictaps geom) VALUES('$plusone', '$pName', '$npName', '$pPhase', '$sDate', '$cDate', '$district', '$vdc', '$ward', '$population', '$household', '$taps', '$pTaps' ST_SetSRID(ST_MakePoint($long, $lat), 4326))";
 	pg_query($connection, $sql);
-	echo $sql;
+	// echo $sql;
 
 
 ?>

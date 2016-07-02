@@ -499,11 +499,11 @@ $(document).ready(function () {
 <label class="question top_question" for="RESULT_RadioButton-9">Project Phase&nbsp;<b class="icon_required" style="color:#FF0000">*</b></label>
 <select id="RESULT_RadioButton-9" name="RESULT_RadioButton-9" class="drop_down">
 <option></option>
-<option value="Radio-0" selected="selected">Completed</option>
-<option value="Radio-1">Under Construction</option>
-<option value="Radio-2">DPR</option>
-<option value="Radio-3">Feasibility Study Completed</option>
-<option value="Radio-4">Probable</option>
+<option value="Completed" selected="selected">Completed</option>
+<option value="Under Construction">Under Construction</option>
+<option value="DPR">DPR</option>
+<option value="Feasibility Study Completed">Feasibility Study Completed</option>
+<option value="Probable">Probable</option>
 </select>
 </div>
 
