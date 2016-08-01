@@ -61,6 +61,9 @@
             map.removePopup(map.popups[0]);
         }
 
+
+
+
     OpenLayers.ProxyHost="http://gis.dwss.gov.np/cgi-bin/proxy.cgi?url=";
     var proj4326 = new OpenLayers.Projection("EPSG:4326");
     var proj3815 = new OpenLayers.Projection("EPSG:3815");
@@ -72,7 +75,7 @@
     var map = new OpenLayers.Map('map',{
       projection:proj900913
     });
-
+		var osm_layer = new OpenLayers.Layer.OSM();
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     	//mapquest tiles
     	 arrayOSM = ["http://otile1.mqcdn.com/tiles/1.0.0/map/${z}/${x}/${y}.jpg",
@@ -84,15 +87,15 @@
         baseOSM = new OpenLayers.Layer.OSM("MapQuest-OSM Tiles", arrayOSM);
 
 
-        map.addLayer(baseOSM);
-        map.setBaseLayer(baseOSM);
+        map.addLayer(osm_layer);
+        map.setBaseLayer(osm_layer);
         //could this be error?? transformof center??
       //  map.setCenter(center.transform(proj4326,proj3815),zoom);
       // map.setCenter(center,zoom);
         map.setCenter(center.transform(proj4326,proj900913),zoom);
 
 
-        var size = new OpenLayers.Size(21,25);
+        var size = new OpenLayers.Size(10,11);
         var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
         var iconMap = new OpenLayers.Icon('/img/marker.png', size, offset);
 
@@ -140,8 +143,62 @@
           $(this).tab('show');
         });
       });
-
-
+      var styleboundary = new OpenLayers.Style({
+			label:"${name}",
+			fontColor:"red",
+			fontSize:"12",
+      fillColor: "#cc33ff",
+      fillOpacity: 0,
+      strokeColor: "#cc33ff",
+      strokeWidth: 2
+		},
+		{
+			context:{
+				name: function(feature){
+					debugger;
+					return(feature.cluster) ? (feature.attributes.count) : "";
+				},
+				graphicHeight: function(feature){
+					if (feature.cluster){
+						if (feature.attributes.count>25){
+							return(12+feature.attributes.count*.15);
+						}
+						else{
+							return 15;
+						}
+					}
+					else{
+						 // return (200/map.getZoom());
+						 return 15;
+					}
+				},
+				graphicWidth: function(feature){
+					if (feature.cluster){
+						if (feature.attributes.count>25){
+							return(12+feature.attributes.count*.15);
+						}
+						else{
+							return 15;
+						}
+					}
+					else{
+						 // return (200/map.getZoom());
+						 return 15;
+					}
+				}
+			}
+		});
+		var boundary = new OpenLayers.Layer.Vector('Project Boundaries',{
+        strategies: [new OpenLayers.Strategy.Fixed()],
+				protocol: new OpenLayers.Protocol.HTTP({
+				url: "data/boundary/boundary.geojson",   //<-- relative or absolute URL to your .osm file
+			  format: new OpenLayers.Format.GeoJSON()
+			}),
+			// projection: map.displayProjection,
+      projection: proj4326,
+			styleMap: new OpenLayers.StyleMap({'default':styleboundary})
+		});
+		map.addLayer(boundary);
 
         // function createpopup(incomming){
         //

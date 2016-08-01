@@ -20,10 +20,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
-<script src="http://openlayers.org/api/2.12/OpenLayers.js" type="text/javascript"></script>
 <script type="text/javascript" src="jquery-1.11.3-jquery.min.js"></script>
-  <script src="http://gis.dwss.gov.np/sahalagani/js/config.js"></script>
-
 <link rel="stylesheet" href="style.css" type="text/css"  />
 <link rel="stylesheet" type="text/css" media="all" href="css/fonts7.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/screen7.css" />
@@ -44,10 +41,6 @@
 	}
 	.col-lg-12 .container{
 		padding-top: 55px;
-	}
-	#map{
-		height:250px;
-		width:250px;
 	}
 </style>
 
@@ -94,10 +87,10 @@
 
 	          </ul>
 			  <ul class = "nav navbar-nav">
-					<li class="active"><a id = "edit" href="http://gis.dwss.gov.np/sahalagani/data/home.php">Add New Records</a></li>
+					<li class="inactive"><a id = "edit" href="http://gis.dwss.gov.np/sahalagani/data/home.php">Add New Records</a></li>
 			  </ul>
 				<ul class = "nav navbar-nav">
-					<li class="inactive"><a id = "edit" href="http://gis.dwss.gov.np/sahalagani/data/editgeom.php">Edit Geometry</a></li>
+					<li class="active"><a id = "edit" href="http://gis.dwss.gov.np/sahalagani/data/editgeom.php">Edit Geometry</a></li>
 			  </ul>
 	          <ul class="nav navbar-nav navbar-right">
 
@@ -229,13 +222,10 @@
 								<button type="button" id="last" class="btn btn-default">&gt;|</button>
 							</div>
 				</div>
-			</div>	
-<div id = "geometry"><a href = "#">Edit Geometry</a></div>
-	<div id = "map"></div>			
-		</div>	
+			</div>
+		</div>
 	</div>
 </div>
-	
 <div class="search-master">
 	<div style="margin:5%;padding:5%;background:white;overflow:auto;max-height:80%;max-width:100%">
 		<div id="search-box" >
@@ -420,9 +410,6 @@
         });
 			}
 		});
-		$("#geometry").on('click', function(e){
-			$('#map').show();
-		});
 		// $("#add").on("click",function(e){
 		// 	c = confirm("Are u sure you want to and new entry with values above?");
 		// 	if (c){
@@ -576,88 +563,6 @@
 		$('#termination-date').nepaliDatePicker({
 			ndpEnglishInput: 'englishDate'
 		});
-
-		//geometry at the end of the html file
-	OpenLayers.ProxyHost="http://gis.dwss.gov.np/cgi-bin/proxy.cgi?url=";
-		//var projectid = $('#projectid').val();
-    var proj4326 = new OpenLayers.Projection("EPSG:4326");
-    var proj3815 = new OpenLayers.Projection("EPSG:3815");
-    var proj900913 = new OpenLayers.Projection("EPSG:900913");
-    var centerX = 85.33141;//491213.721224323//-123.1684986291807;//9497800;
-    var centerY = 27.7;//5456645.24607268//49.245339757767844;//3212000;
-    var center = new OpenLayers.LonLat(centerX, centerY);
-    var zoom = 8;
-    var map = new OpenLayers.Map('map',{
-      projection:proj900913
-    });
-	//map.setCenter(center,zoom);
-		var osm_layer = new OpenLayers.Layer.OSM();
-		map.addLayer(osm_layer);
-		map.setBaseLayer(osm_layer);
-		
-		map.setCenter(center.transform(proj4326,proj900913),zoom);
-		var styleboundary = new OpenLayers.Style({
-			label:"${name}",
-			fontColor:"red",
-			fontSize:"12",
-			fillColor: "#cc33ff",
-			fillOpacity: 0,
-			strokeColor: "#cc33ff",
-			strokeWidth: 2
-		},
-		{
-			context:{
-				name: function(feature){
-					return(feature.cluster) ? (feature.attributes.count) : "";
-				},
-				graphicHeight: function(feature){
-					if (feature.cluster){
-						if (feature.attributes.count>25){
-							return(12+feature.attributes.count*.15);
-						}
-						else{
-							return 15;
-						}
-					}
-					else{
-					 return 15;
-					}
-				},
-				graphicWidth: function(feature){
-					if (feature.cluster){
-						if (feature.attributes.count>25){
-							return(12+feature.attributes.count*.15);
-						}
-						else{
-							return 15;
-						}
-					}
-					else{
-						 // return (200/map.getZoom());
-						 return 15;
-					}
-				}
-			}
-		});
-
-
-	var boundary = new OpenLayers.Layer.Vector('Project Boundaries',{
-			strategies: [new OpenLayers.Strategy.Fixed()],
-			protocol: new OpenLayers.Protocol.HTTP({
-				// url: "getgeojson.php",
-				// callbackKey: 'callback',
-				// params: {
-				// 	pid : projectid
-				// },
-				url: "boundary/boundary.geojson",   //<-- relative or absolute URL to your .osm file
-				format: new OpenLayers.Format.GeoJSON()
-		}),
-		// projection: map.displayProjection,
-		projection: proj4326,
-		styleMap: new OpenLayers.StyleMap({'default':styleboundary})
-	});
-	map.addLayer(boundary);
-
 	});
 
 
